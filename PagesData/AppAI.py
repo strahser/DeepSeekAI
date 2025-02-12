@@ -33,15 +33,26 @@ def process_user_input(user_prompt, df): # Added df as argument
         return
 
     try:
-        #Prepare the prompt
-        augmented_prompt = (f"You are an AI assistant helping user to analyze data in a pandas DataFrame. "
-                            f"if user asked you return table you returned it  in html format. If user asked you return chart you return it in svg format "
-                            
-                        f"The dataframe is:\n\n{df.head().to_markdown()}\n\nUser's question: {user_prompt}\n\nYour Answer:")
+        #Prepare the prompt pay attention that we provide all data frame!! not df.head()
+        augmented_prompt = (
+            f"""You are an AI assistant helping to analyze pandas DataFrame. Follow these rules:
+        1. For tables: return **only** HTML using <table>, <tr>, <th>, <td> tags. Start immediately with <table>.
+        2. For charts: return **only** SVG code with explicit dimensions. Start with <svg> tag. Include all necessary elements.
+        3. Never add markdown, comments or text before/after HTML/SVG.
+        4. For tables, use basic styling: border=1, cell padding=5.
+        5. For SVG, set viewBox and preserve aspect ratio.
+        6. Ensure that all HTML or SVG code is valid and can be directly rendered by tools like Streamlit with method st.write(content, unsafe_allow_html=True)
+
+        DataFrame sample (shape {df.shape}):
+        {df.to_markdown()}
+
+        User question: {user_prompt}
+
+        Your Answer:"""
+        )
         # Add a spinner
         with st.spinner("Running analysis..."):
-            _network_test(df, user_prompt)
-            # _create_gigachat_response(api_key, augmented_prompt, user_prompt)
+            _create_gigachat_response(api_key, augmented_prompt, user_prompt)
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
