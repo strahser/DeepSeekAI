@@ -1,0 +1,6 @@
+streamlit
+openpyxl
+matplotlib
+gigachat
+multipage-streamlit
+seaborn
