@@ -50,7 +50,7 @@ def aggregate_by_category_area(df: pd.DataFrame) -> Optional[pd.DataFrame]:
     """Groups DataFrame by category and area."""
     try:
         grouped_df = df.groupby(["Category", "Area"])["Quantity"].sum().reset_index()
-        return grouped_df
+        return grouped_df.to_html()
     except KeyError as e:
         print(f"Error: Column not found: {e}")
         return None
@@ -62,7 +62,7 @@ def aggregate_by_family_name(df: pd.DataFrame) -> Optional[pd.DataFrame]:
     """Groups DataFrame by Family Name."""
     try:
         grouped_df = df.groupby("Family Name")["Quantity"].sum().reset_index()
-        return grouped_df
+        return grouped_df.to_html()
     except KeyError as e:
         print(f"Error: Column not found: {e}")
         return None

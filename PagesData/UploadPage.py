@@ -7,6 +7,10 @@ def initialize_session_state():
     """Initializes session state variables."""
     if "excel_df" not in st.session_state:
         st.session_state["excel_df"] = None
+    if "analyze_dataframe" not in st.session_state:
+        st.session_state["analyze_dataframe"] = None
+
+
 
 def analyze_dataframe(df):
     """
@@ -37,13 +41,19 @@ def analyze_dataframe(df):
 
 def visualise_loads():
     if st.session_state["excel_df"] is not None:
-        st.subheader("Data Preview")
-        try:
-            st.write(st.session_state["excel_df"].head())
-        except:
-            st.write("")
-        st.subheader("Short description")
-        st.write(analyze_dataframe(st.session_state["excel_df"] ))
+        with st.expander("Data Preview"):
+            st.subheader("Data Preview")
+            try:
+                st.write(st.session_state["excel_df"].head())
+            except:
+                st.write("")
+            st.subheader("Short description")
+
+            try:
+                st.write(st.session_state["analyze_dataframe"])
+            except:
+                st.session_state["analyze_dataframe"] =analyze_dataframe(st.session_state["excel_df"])
+                st.write(analyze_dataframe(st.session_state["excel_df"]))
 
 def load_excel_data(uploaded_file):
     """Loads data from an uploaded Excel file.
@@ -99,29 +109,30 @@ def convert_revit_data(path_conv, file_path):
 
 def upload_page():
     initialize_session_state()
-    st.title("Data Upload")
-    data_source = st.radio("Select Data Source", ["Excel File", "Revit Converter"])
-    if data_source == "Excel File":
-        uploaded_file = st.file_uploader("Upload an Excel file", type="xlsx")
-        if uploaded_file is not None:
-            df = load_excel_data(uploaded_file)
-            if df is not None:
-                st.session_state["excel_df"]  = df
-
-    elif data_source == "Revit Converter":
-        base_path_conv_path = r"e:\DDC"
-        base_revit_file_path = r"e:\DDC\2022 rstadvancedsampleproject.rvt"
-        st.subheader("Enter DDC Folder and Revit File Path")
-        path_conv = st.text_input("Enter path to DDC converter folder (where RvtExporter.exe is located)", base_path_conv_path)  # DDC folder path via text input
-        file_path = st.text_input("Enter path to Revit file (.rvt)", base_revit_file_path)# Revit file path by text input
-
-        if st.button("Convert Revit File"):
-            if file_path and path_conv:
-                df = convert_revit_data(path_conv, file_path)
+    with st.expander("Data Upload"):
+        st.subheader("Data Upload")
+        data_source = st.radio("Select Data Source", ["Excel File", "Revit Converter"])
+        if data_source == "Excel File":
+            uploaded_file = st.file_uploader("Upload an Excel file", type="xlsx")
+            if uploaded_file is not None:
+                df = load_excel_data(uploaded_file)
                 if df is not None:
-                    st.session_state.df = df
-            else:
-                st.warning("Please enter DDC converter folder and Revit file path.")
+                    st.session_state["excel_df"]  = df
+
+        elif data_source == "Revit Converter":
+            base_path_conv_path = r"e:\DDC"
+            base_revit_file_path = r"e:\DDC\2022 rstadvancedsampleproject.rvt"
+            st.subheader("Enter DDC Folder and Revit File Path")
+            path_conv = st.text_input("Enter path to DDC converter folder (where RvtExporter.exe is located)", base_path_conv_path)  # DDC folder path via text input
+            file_path = st.text_input("Enter path to Revit file (.rvt)", base_revit_file_path)# Revit file path by text input
+
+            if st.button("Convert Revit File"):
+                if file_path and path_conv:
+                    df = convert_revit_data(path_conv, file_path)
+                    if df is not None:
+                        st.session_state.df = df
+                else:
+                    st.warning("Please enter DDC converter folder and Revit file path.")
 
     visualise_loads()
 if __name__ == "__main__":

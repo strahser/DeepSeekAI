@@ -4,3 +4,4 @@ matplotlib
 gigachat
 multipage-streamlit
 seaborn
+openai
