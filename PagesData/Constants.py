@@ -1,4 +1,5 @@
 GIT_HUB_LINK = "https://github.com/strahser/DeepSeekAI"
+GIT_HUB_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
 OPEN_AI_LINK ="https://platform.openai.com/api-keys."
 DDC_LINK = "https://datadrivenconstruction.io/chatgpt-and-llm/"
 LOGO_PATH = "resources/DataDrivenConstruction.png"

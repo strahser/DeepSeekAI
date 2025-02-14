@@ -110,6 +110,7 @@ def convert_revit_data(path_conv, file_path):
 
 def upload_page():
     initialize_session_state()
+    st.header("Upload Page")
     with st.expander("hide/show data upload"):
         st.subheader("Data Upload")
         data_source = st.radio("Select Data Source", ["Excel File", "Revit Converter"])
