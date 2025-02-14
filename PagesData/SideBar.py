@@ -1,18 +1,24 @@
+import base64
 import os
-
 import streamlit as st
-GIT_HUB_LINK = "https://github.com/strahser/DeepSeekAI"
-OPEN_AI_LINK ="https://platform.openai.com/api-keys."
-DDC_LINK = "https://datadrivenconstruction.io/chatgpt-and-llm/"
-def display_image(image_path, alt_text="Image", width=None, height=None):
-    """Displays an image.
 
-    Args:
-        image_path: Path to the image file (e.g., "logo.png" or "logo.jpg").
-        alt_text: Alternative text for the image.
-        width: Width of the image in pixels (optional).
-        height: Height of the image in pixels (optional).
+from PagesData.Constants import GIT_HUB_LINK, LOGO_PATH, OPEN_AI_LINK, DDC_LINK
+
+
+def get_image_base64(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+def create_logo_base_64(logo_path, logo_link, width="100px", height="auto"):
+    logo_base64 = get_image_base64(logo_path)
+    clickable_image_html = f"""
+    <a href="{logo_link}" target="_blank">
+        <img src="data:image/png;base64,{logo_base64}" alt="Logo" style="width:{width}; height:{height};">
+    </a>
     """
+    st.markdown(clickable_image_html, unsafe_allow_html=True)
+
+def display_image(image_path, alt_text="Image", width=None, height=None):
     try:
         # Check if the file exists
         if not os.path.exists(image_path):
@@ -28,7 +34,7 @@ def display_image(image_path, alt_text="Image", width=None, height=None):
 
         st.markdown(
             f"""
-            <img src=""
+            <img src="{image_path}"
                  alt="{alt_text}"
                  style="{style}"/>
             """,
@@ -64,16 +70,16 @@ def create_markdown_button_link():
             """,
             unsafe_allow_html=True
         )
+
+
 def create_sidebar():
 
     with st.sidebar:
-        LOGO_PATH = "resources/DdcLabel.jpg"
-        st.logo(LOGO_PATH,size="large")
-
+        create_logo_base_64(LOGO_PATH,DDC_LINK, width="500")
         st.markdown(
             "## How to use\n"
-            f"1. 🔑Enter your [OpenAI API key]({OPEN_AI_LINK}) below\n"  # noqa: E501
-            "2. 📄 Upload a RVT or IFC \n"
+            f"1. 🔑 Enter your [OpenAI API key]({OPEN_AI_LINK})\n"  # noqa: E501
+            "2. 📄 Upload a RVT, IFC or XLSX \n"
             "3. 💬 Ask a question to the data\n"
         )
         api_key_input = st.text_input(
@@ -89,14 +95,18 @@ def create_sidebar():
         st.markdown(f"[Get an OpenAI API key]({OPEN_AI_LINK})")
         create_markdown_button_link()
         st.markdown("---")
-        st.markdown("## About this app")
-        st.markdown(
-                    f"""Our tool converts your data into a DataFrame format, facilitating seamless interaction with any Large 
-                    Language Model (LLM). By running the chat application on your local machine, you maintain complete control 
-                    over both your data and the processing workflow. This ensures enhanced privacy and security, 
-                    as all operations are performed locally without transmitting information externally.
-                    For more detailed information on how ChatGPT and other LLMs can automate data processes, 
-                    please visit: [LLM with CAD Data]({DDC_LINK})
-                    """
+        st.markdown("## Additional tools")
+        st.caption(
+            """We can add here links for another tools, like list of content"""
+            # f"""
+            # Our tool converts your data into a DataFrame format, facilitating seamless interaction with any Large
+            # Language Model (LLM). By running the chat application on your local machine, you maintain complete control
+            # over both your data and the processing workflow. This ensures enhanced privacy and security,
+            # as all operations are performed locally without transmitting information externally.
+            # For more detailed information on how ChatGPT and other LLMs can automate data processes,
+            # please visit: [LLM with CAD Data]({DDC_LINK})
+            # """
         )
         st.markdown("---")
+
+

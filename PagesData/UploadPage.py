@@ -41,7 +41,7 @@ def analyze_dataframe(df):
 
 def visualise_loads():
     if st.session_state["excel_df"] is not None:
-        with st.expander("Data Preview"):
+        with st.expander("hide/show Data Preview"):
             st.subheader("Data Preview")
             try:
                 st.write(st.session_state["excel_df"].head())
@@ -49,9 +49,10 @@ def visualise_loads():
                 st.write("")
             st.subheader("Short description")
 
-            try:
+
+            if  isinstance(st.session_state["analyze_dataframe"],pd.DataFrame):
                 st.write(st.session_state["analyze_dataframe"])
-            except:
+            else:
                 st.session_state["analyze_dataframe"] =analyze_dataframe(st.session_state["excel_df"])
                 st.write(analyze_dataframe(st.session_state["excel_df"]))
 
@@ -109,7 +110,7 @@ def convert_revit_data(path_conv, file_path):
 
 def upload_page():
     initialize_session_state()
-    with st.expander("Data Upload"):
+    with st.expander("hide/show data upload"):
         st.subheader("Data Upload")
         data_source = st.radio("Select Data Source", ["Excel File", "Revit Converter"])
         if data_source == "Excel File":

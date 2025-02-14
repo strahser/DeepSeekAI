@@ -18,19 +18,19 @@ This project is a Streamlit-based application that allows users to upload an Exc
 *   openpyxl
 *   matplotlib
 *   seaborn (might be needed for some chart types)
-*   multipage-streamlit (for multi-page app structure)
-*   gigachat (if you intend to integrate with the Gigachat API)
+*   openai
+
 
 To install these dependencies, run:
 
 ```bash
-pip install streamlit openpyxl matplotlib seaborn multipage-streamlit gigachat
+pip install streamlit openpyxl matplotlib seaborn openai
 
 markdown
 Setup and Usage
 Install Dependencies: Make sure you have installed all the required Python packages.
 
-API Key (Optional): If you want to use GigaChat integration, obtain an API key from GigaChat’s website.
+API Key (Optional): If you want to use Open AI integration, obtain an API key from OpenAI’s website.
 
 Run the Application: Save the provided code as a Python file (e.g., app.py) and run it using Streamlit:
 

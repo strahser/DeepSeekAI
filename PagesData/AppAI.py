@@ -1,12 +1,7 @@
-import os
 import time
 import random
-
 import streamlit as st
-from gigachat import GigaChat
-
 from PagesData.Utils import neural_network_responses
-
 import openai
 
 
@@ -16,7 +11,9 @@ class ChatUI:
         self.initialize_session_state()
         self.chat_processor = ChatProcessor()
 
-    def initialize_session_state(self):
+
+    @staticmethod
+    def initialize_session_state():
         """Initializes session state variables."""
         if "chat_history" not in st.session_state:
             st.session_state["chat_history"] = []
@@ -25,13 +22,17 @@ class ChatUI:
         if "excel_df" not in st.session_state:
             st.session_state["excel_df"] = None
 
-    def display_chat_history(self):
+
+    @staticmethod
+    def display_chat_history():
         """Displays the chat history."""
         for role, content in st.session_state["chat_history"]:
             with st.chat_message(role):
                 st.write(content, unsafe_allow_html=True)
 
-    def _handle_api_key_input(self):
+
+    @staticmethod
+    def _handle_api_key_input():
         """Handles API key input and updates session state."""
         api_key = st.text_input(
             "Enter your API Key:",
@@ -46,14 +47,15 @@ class ChatUI:
         prompt = st.chat_input("Ask questions about your data:")
         # check if it is first prompt
         if not any(role == "assistant" for role, _ in st.session_state["chat_history"]):
-            # Первое приветственное сообщение от робота
+            # first message from AI
             welcome_message = "How can I assist you with your data? Feel free to ask anything!"
             st.session_state["chat_history"].append(("assistant", welcome_message))
         if prompt and self._validate_inputs(df):
             self._process_input(prompt, df)
             st.rerun()
 
-    def _validate_inputs(self, df):
+    @staticmethod
+    def _validate_inputs(df):
         """Validates required inputs before processing."""
         if not st.session_state["api_key"]:
             st.warning("Please enter your API key first.")
@@ -95,7 +97,7 @@ class ChatProcessor:
         3. Never add markdown, comments or text before/after HTML/SVG.
         4. For tables, use basic styling: border=1, cell padding=5.
         5. For SVG, set viewBox and preserve aspect ratio.
-        6. Ensure all code is valid and can be directly rendered.
+        6. Ensure all code is valid and can be directly rendered in streamlit.write().
         """
 
     def process_request(self, api_key, user_prompt, df, model):
@@ -108,9 +110,7 @@ class ChatProcessor:
             # send only user prompt
             augmented_prompt = f"User question: {user_prompt}\nYour Answer:"
 
-        if model == "gigachat":
-            return self._get_gigachat_response(api_key, augmented_prompt)
-        elif model == "gpt":
+        if model == "gpt":
             return self._get_openai_response(api_key, augmented_prompt)
 
 
@@ -128,13 +128,9 @@ class ChatProcessor:
             "Your Answer":""
         }
 
-    def _get_gigachat_response(self, api_key, prompt):
-        """Gets response from GigaChat API."""
-        with GigaChat(credentials=api_key, verify_ssl_certs=False) as giga:
-            response = giga.chat(prompt)
-            return response.choices[0].message.content
 
-    def _get_openai_response(self, api_key, prompt):
+    @staticmethod
+    def _get_openai_response(api_key, prompt):
         """
         Generates a response from OpenAI's GPT-3.5-turbo model and checks connection/API key.
 
@@ -163,7 +159,9 @@ class ChatProcessor:
         except Exception as e:
             return f"An unexpected error occurred: {e}."
 
-    def create_network_test(self, df, user_prompt):
+
+    @staticmethod
+    def create_network_test(df, user_prompt):
         time.sleep(random.uniform(1, 4))
         try:
             selected_function = neural_network_responses.get(user_prompt)
@@ -175,7 +173,4 @@ class ChatProcessor:
         except Exception as e:
             return f"Error during network test: {e}"
 
-def run():
-    ui = ChatUI()
-    ui.render()
 
