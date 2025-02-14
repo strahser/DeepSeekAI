@@ -1,6 +1,7 @@
 import streamlit as st
 import openai
 
+from PagesData.Utils import create_network_test
 
 
 class ChatUI:
@@ -67,7 +68,7 @@ class ChatUI:
         try:
             st.session_state["chat_history"].append(("user", prompt))
             with st.spinner("Running analysis..."):
-                # response= self.chat_processor.create_network_test(df, prompt)
+                # response= create_network_test(df, prompt)
                 response = self.chat_processor.process_request(
                     api_key=st.session_state["api_key"],
                     user_prompt=prompt,

@@ -1,5 +1,4 @@
 import streamlit as st
-
 from Components.HorizontalMenu import HorizontalMenu
 from PagesData.AppAI import  ChatUI
 from PagesData.Home import display_home_content
