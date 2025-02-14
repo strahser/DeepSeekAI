@@ -1,12 +1,26 @@
 from typing import Optional
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
-import seaborn as sns  # For better plot styling
+import seaborn as sns
 import io
 import base64
+import time
+import random
+import matplotlib.pyplot as plt
 
+
+def create_network_test(df, user_prompt):
+    time.sleep(random.uniform(1, 4))
+    try:
+        selected_function = neural_network_responses.get(user_prompt)
+        if selected_function:
+            result = selected_function(df)
+            return result
+        else:
+            return "No matching function found for the given prompt."
+    except Exception as e:
+        return f"Error during network test: {e}"
 
 def create_and_embed_plot(df, plot_type, column1, column2=None):  # Added handling for different plot types
     """Creates a plot based on the DataFrame and returns an HTML img tag embedding the plot."""

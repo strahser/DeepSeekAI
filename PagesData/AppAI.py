@@ -1,7 +1,4 @@
-import time
-import random
 import streamlit as st
-from PagesData.Utils import neural_network_responses
 import openai
 
 
@@ -160,17 +157,6 @@ class ChatProcessor:
             return f"An unexpected error occurred: {e}."
 
 
-    @staticmethod
-    def create_network_test(df, user_prompt):
-        time.sleep(random.uniform(1, 4))
-        try:
-            selected_function = neural_network_responses.get(user_prompt)
-            if selected_function:
-                result = selected_function(df)
-                return result
-            else:
-                return "No matching function found for the given prompt."
-        except Exception as e:
-            return f"Error during network test: {e}"
+
 
 
