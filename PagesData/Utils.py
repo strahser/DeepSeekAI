@@ -22,6 +22,7 @@ def create_network_test(df, user_prompt):
     except Exception as e:
         return f"Error during network test: {e}"
 
+
 def create_and_embed_plot(df, plot_type, column1, column2=None):  # Added handling for different plot types
     """Creates a plot based on the DataFrame and returns an HTML img tag embedding the plot."""
     plt.figure()  # Important to create a new figure for each plot
@@ -53,6 +54,7 @@ def create_and_embed_plot(df, plot_type, column1, column2=None):  # Added handli
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
     return f'<img src="" alt="Chart">'
 
+
 def debug_sample(df):
     df_group1 = df.groupby(['Category'])['Area'].count()
     df_group1 = df_group1[df_group1 != 0]
@@ -72,6 +74,7 @@ def aggregate_by_category_area(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         print(f"An unexpected error occurred: {e}")
         return None
 
+
 def aggregate_by_family_name(df: pd.DataFrame) -> Optional[pd.DataFrame]:
     """Groups DataFrame by Family Name."""
     try:
@@ -84,51 +87,45 @@ def aggregate_by_family_name(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         print(f"An unexpected error occurred: {e}")
         return None
 
-def plot_family_name_distribution(df: pd.DataFrame) -> Optional[plt.Figure]:
-    """Creates a distribution plot of quantity by Family Name."""
-    try:
-        if "Family Name" not in df.columns:
-            raise KeyError("Column 'Family Name' not found in DataFrame")
-        if "Quantity" not in df.columns:
-            raise KeyError("Column 'Quantity' not found in DataFrame")
-        family_quantities = df.groupby("Family Name")["Quantity"].sum()
-        fig, ax = plt.subplots(figsize=(10, 6))
-        family_quantities.plot(kind="bar", ax=ax)
-        ax.set_title("Distribution of Quantity by Family Name")
-        ax.set_xlabel("Family Name")
-        ax.set_ylabel("Sum of Quantity")
-        ax.tick_params(axis='x', rotation=45, labelsize=10)
-        plt.tight_layout()
-        return fig
-    except KeyError as e:
-        print(f"Error: {e}")
-        return None
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return None
 
-def plot_category_distribution(df: pd.DataFrame) -> Optional[plt.Figure]:
-    """Creates a distribution plot of quantity by Category."""
-    try:
-        if "Category" not in df.columns:
-            raise KeyError("Column 'Category' not found in DataFrame")
-        if "Quantity" not in df.columns:
-            raise KeyError("Column 'Quantity' not found in DataFrame")
-        category_quantities = df.groupby("Category")["Quantity"].sum()
-        fig, ax = plt.subplots(figsize=(10, 6))
-        category_quantities.plot(kind="bar", ax=ax)
-        ax.set_title("Distribution of Quantity by Category")
-        ax.set_xlabel("Category")
-        ax.set_ylabel("Sum of Quantity")
-        ax.tick_params(axis='x', rotation=45, labelsize=10)
-        plt.tight_layout()
-        return fig
-    except KeyError as e:
-        print(f"Error: {e}")
-        return None
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return None
+# 1. Area Distribution
+
+def area_distribution(df):
+    """
+    Displays a histogram of the area distribution of elements.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the 'Area' column.
+    """
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.hist(df['Area'].dropna(), bins=30, color='green', edgecolor='black', alpha=0.7)
+    ax.set_title('Area Distribution of Elements')
+    ax.set_xlabel('Area (sq. m)')
+    ax.set_ylabel('Number of Elements')
+    ax.grid(True)
+    return fig
+
+
+# 2. Top Families by Element Count
+def family_name_distribution(df):
+    """
+    Displays a bar chart of the top 10 families by the number of elements.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the 'Family Name' column.
+    """
+
+    top_families = df['Family Name'].value_counts().head(10)
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    top_families.plot(kind='bar', ax=ax, color='purple')
+    ax.set_title('Top 10 Families by Number of Elements')
+    ax.set_xlabel('Family')
+    ax.set_ylabel('Number of Elements')
+    ax.tick_params(axis='x', rotation=45)
+    return fig
+
 
 def plot_aggregate_by_category_area(df: pd.DataFrame) -> Optional[plt.Figure]:
     """Groups DataFrame by category and area and returns a bar chart."""
@@ -179,11 +176,13 @@ def plot_aggregate_by_family_name(df: pd.DataFrame) -> Optional[plt.Figure]:
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
-general_columns = ["Category","Area","Family Name","Quantity"]
+
+
+general_columns = ["Category", "Area", "Family Name", "Quantity"]
 
 neural_network_responses = {
     "Group data by category and area and sum the quantity": aggregate_by_category_area,
     "Aggregate quantity by family name": aggregate_by_family_name,
-    "Create a distribution plot of quantity by family name": plot_family_name_distribution,
-    "Generate a distribution plot of quantity by category": plot_category_distribution,
+    "Create area Distribution": area_distribution,
+    "Generate top families by element count": family_name_distribution,
 }

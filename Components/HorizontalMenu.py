@@ -1,10 +1,9 @@
 import streamlit as st
-from  typing import  Callable
 
 
 class HorizontalMenu:
     """
-    Класс для горизонтального меню с фиксированным цветом активной кнопки
+    Class for a horizontal menu with a fixed active button color
     """
 
     def __init__(self, pages: list[dict], active_color: str = "#163969"):
@@ -16,7 +15,7 @@ class HorizontalMenu:
     def _inject_custom_css(self):
         st.markdown(f"""
             <style>
-            /* Базовые стили для всех кнопок */
+            /* Base styles for all buttons */
             div.stButton > button {{
                 transition: all 0.3s ease !important;
                 border: 1px solid {self.active_color} !important;
@@ -24,14 +23,14 @@ class HorizontalMenu:
                 color: black !important;
             }}
 
-            /* Стили для активной кнопки */
+            /* Styles for the active button */
             div.stButton > button:focus:not(:active),
             div.stButton > button[data-active="true"] {{
                 background-color: {self.active_color} !important;
                 color: white !important;
             }}
 
-            /* Отключаем эффект нажатия */
+            /* Disable the click effect */
             div.stButton > button:active {{
                 transform: none !important;
             }}
@@ -51,19 +50,19 @@ class HorizontalMenu:
                 title = page['title']
                 is_active = st.session_state.current_page == title
 
-                # Создаем кнопку с кастомным атрибутом
+                # Create a button with a custom attribute
                 clicked = st.button(
                     f"{page.get('icon', '')} {title}",
                     key=f"btn_{title}",
                     use_container_width=True
                 )
 
-                # Обновляем состояние при клике
+                # Update state on click
                 if clicked:
                     st.session_state.current_page = title
                     st.rerun()
 
-                # Добавляем кастомный атрибут через HTML
+                # Add a custom attribute via HTML
                 if is_active:
                     st.markdown(
                         f"<script>document.querySelector('button[data-testid=\"baseButton-secondary\"]')"
@@ -76,9 +75,3 @@ class HorizontalMenu:
             if page['title'] == st.session_state.current_page:
                 page['function']()
                 break
-
-
-
-
-
-

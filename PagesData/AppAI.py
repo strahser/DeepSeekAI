@@ -9,7 +9,6 @@ class ChatUI:
         self.initialize_session_state()
         self.chat_processor = ChatProcessor()
 
-
     @staticmethod
     def initialize_session_state():
         """Initializes session state variables."""
@@ -20,14 +19,12 @@ class ChatUI:
         if "excel_df" not in st.session_state:
             st.session_state["excel_df"] = None
 
-
     @staticmethod
     def display_chat_history():
         """Displays the chat history."""
         for role, content in st.session_state["chat_history"]:
             with st.chat_message(role):
                 st.write(content, unsafe_allow_html=True)
-
 
     @staticmethod
     def _handle_api_key_input():
@@ -37,7 +34,6 @@ class ChatUI:
             type="password",
             key="api_key_input"
         )
-
 
     def _handle_user_input(self):
         """Handles user input processing and response generation."""
@@ -68,13 +64,13 @@ class ChatUI:
         try:
             st.session_state["chat_history"].append(("user", prompt))
             with st.spinner("Running analysis..."):
-                # response= create_network_test(df, prompt)
-                response = self.chat_processor.process_request(
-                    api_key=st.session_state["api_key"],
-                    user_prompt=prompt,
-                    df=df,
-                    model="gpt"
-                )
+                response = create_network_test(df, prompt)
+                # response = self.chat_processor.process_request(
+                #     api_key=st.session_state["api_key"],
+                #     user_prompt=prompt,
+                #     df=df,
+                #     model="gpt"
+                # )
                 st.session_state["chat_history"].append(("assistant", response))
 
         except Exception as e:
@@ -111,7 +107,6 @@ class ChatProcessor:
         if model == "gpt":
             return self._get_openai_response(api_key, augmented_prompt)
 
-
     def _create_augmented_prompt(self, user_prompt, df):
         """Creates augmented prompt with DataFrame context."""
         return {
@@ -123,9 +118,8 @@ class ChatProcessor:
             "df_description": df.describe().to_markdown(),
             "full Data Frame": df.to_markdown(),
             "User question": user_prompt,
-            "Your Answer":""
+            "Your Answer": ""
         }
-
 
     @staticmethod
     def _get_openai_response(api_key, prompt):
@@ -156,8 +150,3 @@ class ChatProcessor:
             return f"Connection Error: {e}. Please check your internet connection."
         except Exception as e:
             return f"An unexpected error occurred: {e}."
-
-
-
-
-
