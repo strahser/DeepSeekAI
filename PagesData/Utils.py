@@ -183,6 +183,6 @@ general_columns = ["Category", "Area", "Family Name", "Quantity"]
 neural_network_responses = {
     "Group data by category and area and sum the quantity": aggregate_by_category_area,
     "Aggregate quantity by family name": aggregate_by_family_name,
-    "Create area Distribution": area_distribution,
-    "Generate top families by element count": family_name_distribution,
+    "Create plot area Distribution": area_distribution,
+    "Generate plot top families by element count": family_name_distribution,
 }

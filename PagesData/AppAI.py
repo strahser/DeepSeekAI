@@ -64,13 +64,13 @@ class ChatUI:
         try:
             st.session_state["chat_history"].append(("user", prompt))
             with st.spinner("Running analysis..."):
-                response = create_network_test(df, prompt)
-                # response = self.chat_processor.process_request(
-                #     api_key=st.session_state["api_key"],
-                #     user_prompt=prompt,
-                #     df=df,
-                #     model="gpt"
-                # )
+                # response = create_network_test(df, prompt)
+                response = self.chat_processor.process_request(
+                    api_key=st.session_state["api_key"],
+                    user_prompt=prompt,
+                    df=df,
+                    model="gpt"
+                )
                 st.session_state["chat_history"].append(("assistant", response))
 
         except Exception as e:
