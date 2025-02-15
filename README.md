@@ -13,18 +13,19 @@ This project is a Streamlit-based application that allows users to upload an Exc
 
 ## Requirements
 
-*   Python 3.6+
-*   Streamlit
-*   openpyxl
 *   matplotlib
-*   seaborn (might be needed for some chart types)
+*   streamlit
+*   openpyxl
+*   seaborn
+*   openai
+*   tabulate
 *   openai
 
 
 To install these dependencies, run:
 
 ```bash
-pip install streamlit openpyxl matplotlib seaborn openai
+pip install streamlit openpyxl matplotlib seaborn openai tabulate
 
 markdown
 Setup and Usage
