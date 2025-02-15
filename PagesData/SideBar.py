@@ -6,7 +6,7 @@ from PagesData.Constants import GIT_HUB_LINK, LOGO_PATH, OPEN_AI_LINK, DDC_LINK,
 
 
 def create_sidebar():
-
+    st.write("")
     with st.sidebar:
         create_logo_base_64(LOGO_PATH,DDC_LINK, width="500")
         st.markdown(
@@ -31,18 +31,14 @@ def create_sidebar():
         st.markdown("## Additional tools")
         st.sidebar.caption(
             f"""
-        🎬 Video Tutorials for Using DDC Tools
-        [Link](https://www.youtube.com/@datadrivenconstruction)
+        🎬 [Video Tutorials](https://www.youtube.com/@datadrivenconstruction) for Using DDC Tools
         <br>
-        📥 Download RVT, IFC, DWG converters
-        [Link](https://datadrivenconstruction.io/convertors/)
+        📥 [Download](https://datadrivenconstruction.io/convertors/) RVT, IFC, DWG converters
         <br>
-        🧮 DDC Excel plugin
-        [Link](https://datadrivenconstruction.io/ddc-excel-plugin-for-working-with-revit-ifc-and-dwg/)
+        🧮 [DDC Excel](https://datadrivenconstruction.io/ddc-excel-plugin-for-working-with-revit-ifc-and-dwg/) plugin
         <br>
-        ⚙️ Pipeline and ETL
-        [Link](https://datadrivenconstruction.io/pipeline-in-construction/)
-        """
+        ⚡️ [Pipeline](https://datadrivenconstruction.io/pipeline-in-construction/) and ETL
+                """
             , unsafe_allow_html=True
         )
 

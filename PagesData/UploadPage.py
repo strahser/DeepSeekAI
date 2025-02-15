@@ -113,7 +113,7 @@ def upload_page():
     st.header("Upload Page")
     with st.expander("hide/show data upload"):
         st.subheader("Data Upload")
-        data_source = st.radio("Select Data Source", ["Excel File", "Revit Converter"])
+        data_source = st.radio("Select Data Source", ["Revit Converter","Excel File"])
         if data_source == "Excel File":
             uploaded_file = st.file_uploader("Upload an Excel file", type="xlsx")
             if uploaded_file is not None:

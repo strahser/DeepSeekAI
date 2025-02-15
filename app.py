@@ -30,9 +30,10 @@ def main():
         page_icon="🤖",
         layout="wide",
     )
+    st.title("Chat with Revit and IFC")
     init_state()
     # Display the app title
-    st.title("Chat with Revit and IFC")
+
 
     create_sidebar()
 

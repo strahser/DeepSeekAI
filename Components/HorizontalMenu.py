@@ -4,87 +4,77 @@ from  typing import  Callable
 
 class HorizontalMenu:
     """
-    A class to create a horizontal menu with dynamic pages, icons and custom active state color.
+    Класс для горизонтального меню с фиксированным цветом активной кнопки
     """
 
-    def __init__(self, pages: list[dict]):
-        """
-        Initialize the HorizontalMenu with a list of pages.
-
-        :param pages: List of dictionaries containing page details.
-                      Each dictionary should have:
-                      - "title": Title of the page (str)
-                      - "icon": Icon for the page (str, optional)
-                      - "function": Callable function to render the page content
-        """
+    def __init__(self, pages: list[dict], active_color: str = "#163969"):
         self.pages = pages
+        self.active_color = active_color
         self._inject_custom_css()
         self.init_state()
 
-    @staticmethod
-    def _inject_custom_css():
-        """Injects custom CSS for button styling."""
-        st.markdown(
-            f"""
+    def _inject_custom_css(self):
+        st.markdown(f"""
             <style>
-            /* Active button styling */
-            div[data-testid="column"] > button[kind="primary"] {{
-                background-color: #163969 !important;
-                border-color: #163969 !important;
+            /* Базовые стили для всех кнопок */
+            div.stButton > button {{
+                transition: all 0.3s ease !important;
+                border: 1px solid {self.active_color} !important;
+                background-color: #F0F2F6 !important;
+                color: black !important;
+            }}
+
+            /* Стили для активной кнопки */
+            div.stButton > button:focus:not(:active),
+            div.stButton > button[data-active="true"] {{
+                background-color: {self.active_color} !important;
                 color: white !important;
+            }}
+
+            /* Отключаем эффект нажатия */
+            div.stButton > button:active {{
+                transform: none !important;
             }}
             </style>
             """,
-            unsafe_allow_html=True
-        )
+                    unsafe_allow_html=True
+                    )
 
     def init_state(self):
-        """
-        Initializes the session state for the current page.
-        """
         if "current_page" not in st.session_state:
-            st.session_state["current_page"] = self.pages[0]["title"]
+            st.session_state.current_page = self.pages[0]['title']
 
     def create_menu(self):
-        """
-        Creates the horizontal menu using Streamlit columns and buttons with active state highlighting.
-        """
-        # Create columns dynamically based on the number of pages
         cols = st.columns(len(self.pages))
+        for idx, page in enumerate(self.pages):
+            with cols[idx]:
+                title = page['title']
+                is_active = st.session_state.current_page == title
 
-        # Add buttons for each page
-        for i, page in enumerate(self.pages):
-            title = page["title"]
-            icon = page.get("icon", "")  # Optional icon
-            key = f"{title.lower()}_button"
-            current_page = st.session_state["current_page"]
+                # Создаем кнопку с кастомным атрибутом
+                clicked = st.button(
+                    f"{page.get('icon', '')} {title}",
+                    key=f"btn_{title}",
+                    use_container_width=True
+                )
 
-            with cols[i]:
-                # Display the button with an icon (if provided)
-                if icon:
-                    button_label = f"{icon} {title}"
-                else:
-                    button_label = title
-
-                # Determine button type (primary for active page)
-                button_type = "primary" if title == current_page else "secondary"
-
-                if st.button(button_label,
-                             key=key,
-                             type=button_type,
-                             use_container_width=True):
-                    # Update the session state and trigger rerun
-                    st.session_state["current_page"] = title
+                # Обновляем состояние при клике
+                if clicked:
+                    st.session_state.current_page = title
                     st.rerun()
 
+                # Добавляем кастомный атрибут через HTML
+                if is_active:
+                    st.markdown(
+                        f"<script>document.querySelector('button[data-testid=\"baseButton-secondary\"]')"
+                        f".setAttribute('data-active', 'true')</script>",
+                        unsafe_allow_html=True
+                    )
+
     def render_current_page(self):
-        """
-        Renders the content of the currently selected page.
-        """
-        current_page = st.session_state.get("current_page")
         for page in self.pages:
-            if page["title"] == current_page:
-                page["function"]()
+            if page['title'] == st.session_state.current_page:
+                page['function']()
                 break
 
 
