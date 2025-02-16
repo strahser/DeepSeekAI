@@ -2,16 +2,17 @@
 
 This project is a Streamlit-based application that allows users to upload an Excel file and then chat with an AI assistant to analyze the data within that file. The AI assistant is powered by a "neural network" that can perform various data analysis tasks based on user prompts.
 
+**Repository Link:** [https://github.com/strahser/DeepSeekAI.git](https://github.com/strahser/DeepSeekAI.git)
+
 ## Key Features
 
-*   **Excel File Upload:** Users can upload an Excel file (.xlsx) to be analyzed.
-*   **API Key Integration:**  Users can provide their API key for GigaChat, a large language model, to enable more sophisticated data analysis.
-*   **Chat Interface:**  A chat interface allows users to ask questions about the uploaded data.*   
-*   **Chart Generation:** The application can generate and display various charts (e.g., bar charts) based on user prompts.*  
-*   **Multi-Page Interface:** The application is structured as a multi-page Streamlit app, allowing for a cleaner user experience by separating the upload and chat functionalities.
-*   
+1.  Convert CAD (BIM) formats RVT, IFC, into a DataFrame for analysis.
+2.  Either load your data in XLSX that came from the DDC conversion tools or load any XLSX and CSV you are working with in the project.
+3.  Interact with the data through natural language queries via the AI Chat interface.
 
 ## Requirements
+
+The following Python packages are required to run this application:
 
 *   matplotlib
 *   streamlit
@@ -19,32 +20,52 @@ This project is a Streamlit-based application that allows users to upload an Exc
 *   seaborn
 *   openai
 *   tabulate
-*   openai
+*   pandas
 
+## Installation
 
-To install these dependencies, run:
+1.  **Clone the repository:**
 
-```bash
-pip install streamlit openpyxl matplotlib seaborn openai tabulate
+    ```bash
+    git clone https://github.com/strahser/DeepSeekAI.git
+    cd DeepSeekAI
+    ```
 
-markdown
-Setup and Usage
-Install Dependencies: Make sure you have installed all the required Python packages.
+2.  **Install dependencies:**
 
-API Key (Optional): If you want to use Open AI integration, obtain an API key from OpenAI’s website.
+    This project uses a `requirements.txt` file to manage dependencies. You can install all the required packages using pip:
 
-Run the Application: Save the provided code as a Python file (e.g., app.py) and run it using Streamlit:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-streamlit run app.py
+    Alternatively, you can install the dependencies individually:
 
-bash
-This will open the application in your web browser.
+    ```bash
+    pip install streamlit openpyxl matplotlib seaborn openai tabulate pandas
+    ```
 
-Upload an Excel File: In the “Upload” page, upload your Excel file using the file uploader.
+## Setup and Usage
 
-Chat with AI: Navigate to the “Chat with AI” page. Enter your API key (if desired) and begin asking questions about your data in the chat input.
+1.  **Install Dependencies:** Make sure you have installed all the required Python packages as described in the "Installation" section above.
 
+2.  **API Key (Optional):** If you want to use Open AI integration, obtain an API key from OpenAI's website. You'll need to set this up within the Streamlit application's user interface (usually in a configuration section or chat settings).
 
-Code Structure
+3.  **Run the Application:** Save the main code as a Python file (e.g., `app.py`) and run it using Streamlit:
 
-This README provides a comprehensive overview of the Data Analysis Chatbot project, including its features, setup instructions, code structure, limitations, and potential future enhancements. “`
+    ```bash
+    streamlit run app.py
+    ```
+
+    This will open the application in your web browser.
+
+4.  **Upload an Excel File:** In the "Upload" page (if applicable in your application), upload your Excel file using the file uploader.
+
+5.  **Chat with AI:** Navigate to the "Chat with AI" page (if applicable). Enter your API key (if required) and begin asking questions about your data in the chat input.
+
+## Code Structure
+
+[*(Optional:  Add a brief overview of the main Python files and their purpose.  For example:)*]
+[*(Example:  `app.py` contains the main Streamlit application logic.  `data_processing.py` contains functions for data cleaning and transformation.)*]
+
+This README provides a comprehensive overview of the Data Analysis Chatbot project, including its features, setup instructions, code structure, limitations, and potential future enhancements.
