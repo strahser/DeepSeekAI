@@ -100,7 +100,6 @@ def convert_revit_data(path_conv, file_path):
                 output_file = file_path[:-4] + "_rvt.xlsx"
                 df = pd.read_excel(output_file)
                 # df.columns = [col.split(' : ')[0] for col in df.columns]  # remove storage type does not work in streamlit visualisation
-
                 return df
             else:
                 st.error(f"Conversion failed. Error message: {stderr.decode('utf-8')}")
@@ -124,8 +123,8 @@ def upload_page():
                     st.session_state["excel_df"] = df
 
         elif data_source == "Revit Converter":
-            base_path_conv_path = r"d:\DDCData"
-            base_revit_file_path = r"d:\DDCData\2022 rstadvancedsampleproject.rvt"
+            base_path_conv_path = os.path.abspath( r"d:\DDCData")
+            base_revit_file_path = os.path.abspath( r"d:\DDCData\2022 rstadvancedsampleproject.rvt")
             st.subheader("Enter DDC Folder and Revit File Path")
             path_conv = st.text_input("Enter path to DDC converter folder (where RvtExporter.exe is located)",
                                       base_path_conv_path)  # DDC folder path via text input
@@ -133,6 +132,7 @@ def upload_page():
                                       base_revit_file_path)  # Revit file path by text input
 
             if st.button("Convert Revit File"):
+                st.write(f"revit  convertor path {path_conv}- revit file path {file_path}" )
                 if file_path and path_conv:
                     df = convert_revit_data(path_conv, file_path)
                     if df is not None:

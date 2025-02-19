@@ -1,7 +1,6 @@
 import streamlit as st
 import openai
 
-from PagesData.Utils import create_network_test
 
 
 class ChatUI:

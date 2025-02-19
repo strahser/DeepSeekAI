@@ -1,11 +1,11 @@
+import time
+import random
 from typing import Optional, Any
 import pandas as pd
 import streamlit as st
 import seaborn as sns
 import io
 import base64
-import time
-import random
 import matplotlib.pyplot as plt
 from pandas import DataFrame
 
